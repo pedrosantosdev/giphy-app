@@ -19,25 +19,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2 # setup the repository in the runner
-      - name: Setup Node.js # setup Node.js in the runner
-        uses: actions/setup-node@v1
+      - name: Setup Yarn And Install dependencies # setup Yarn in the runner
+        uses: borales/actions-yarn@v2.0.0
         with:
-          node-version: '12'
-      - uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node-
-      - name: Install dependencies
-        run: npm ci
+          cmd: install # will run `yarn install` command
       - name: Lint Run
-        run: npm run lint
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: run lint # will run `yarn run lint` command
       - name: Unit Test Run
-        run: npm run test:unit # run the tests
+        uses: borales/actions-yarn@v2.0.0
+        with:
+          cmd: run test:unit # will run `yarn run test:unit` command
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: npm run serve
+          start: yarn run serve
           wait-on: http://localhost:8080/
           config_file: cypress.json
           spec: "tests/e2e/**/*"
@@ -54,17 +51,16 @@ jobs:
      runs-on: ubuntu-latest
      steps:
       - uses: actions/checkout@v2 # setup the repository in the runner
-      - name: Setup Node.js # setup Node.js in the runner
-        uses: actions/setup-node@v1
+      - name: Setup Yarn And Install dependencies # setup Yarn in the runner
+        uses: borales/actions-yarn@v2.0.0
         with:
-          node-version: '12'
-      - uses: actions/cache@v2
+          cmd: install # will run `yarn install` command
+      - name: Build Project # setup Yarn in the runner
+        uses: borales/actions-yarn@v2.0.0
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-node-
+          cmd: install # will run `yarn install` command
       - name: Install dependencies and Build Project
-        run: npm ci && npm run build --if-present --production # build the project
+        run: run build --if-present --production # build the project
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
