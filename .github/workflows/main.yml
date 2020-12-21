@@ -33,7 +33,7 @@ jobs:
       - name: Lint Run
         run: npm run lint # will run `npm run lint` command
       - name: Unit Test Run
-        run: npm test:unit # will run `npm run test:unit` command
+        run: npm run test:unit # will run `npm run test:unit` command
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
