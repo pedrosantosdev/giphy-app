@@ -37,12 +37,12 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
-          start: npm run test:e2e
-          wait-on: http://localhost:8081/
+          start: npm run serve
+          wait-on: http://localhost:8080/
           config_file: cypress.json
           spec: "tests/e2e/**/*"
         env:
-          CYPRESS_baseUrl: http://localhost:8081/
+          CYPRESS_baseUrl: http://localhost:8080/
       - name: Archive code coverage results
         uses: actions/upload-artifact@v2
         with:
