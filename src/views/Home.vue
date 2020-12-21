@@ -1,28 +1,33 @@
 <template>
-  <div id="GridImages" class="container" v-if="imgs.length">
-    <Gif
-      v-for="(img, index) in imgs"
-      :key="index"
-      :url="img.images.downsized.url"
-    />
-    <div :class="{ 'is-hidden': !isLoading }" id="loading">
-      <img src="../assets/icons/loading.svg" alt="Loading Animation"/>
+  <div>
+    <Navbar />
+    <div id="GridImages" class="container" v-if="imgs.length">
+      <Gif
+        v-for="(img, index) in imgs"
+        :key="index"
+        :url="img.images.downsized.url"
+      />
+      <div :class="{ 'is-hidden': !isLoading }" id="loading">
+        <img src="../assets/icons/loading.svg" alt="Loading Animation" />
+      </div>
     </div>
-  </div>
-  <div v-else>
-    <h1>No results found</h1>
+    <div v-else>
+      <h1>No results found</h1>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Gif from "@/components/Gif.vue";
+import Navbar from "@/components/Navbar.vue";
 import Response from "@/interfaces/response";
 import axios, { AxiosResponse } from "axios";
 
 @Component({
   components: {
-    Gif
+    Gif,
+    Navbar
   }
 })
 export default class Home extends Vue {
