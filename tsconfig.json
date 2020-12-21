@@ -19,6 +19,9 @@
     "paths": {
       "@/*": [
         "src/*"
+      ],
+      "@sass": [
+        "src/assets/sass/*"
       ]
     },
     "lib": [

@@ -2,23 +2,24 @@
 @import 'base/variables'
 @import 'base/mixins'
 
-#app {
+// Components
+@import 'components/_grid'
+
+body
+  background-color: $black;
+
+#app
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
+  color: $primary;
+#nav
   padding: 30px;
 
-  a {
+  a
     font-weight: bold;
-    color: #2c3e50;
+    color: $primary;
 
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
+    &.router-link-exact-active
+      color: $dark-primary;

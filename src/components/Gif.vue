@@ -1,15 +1,13 @@
 <template v-if="url.length">
-  <div>
-    <img :src="url" class="" />
-  </div>
+  <figure>
+    <img :src="url" class="" crossorigin="Anonymous" loading="lazy" />
+  </figure>
 </template>
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
-@Options({
-  props: {
-    url: String
-  }
-})
-export default class Gif extends Vue {}
+@Component
+export default class Gif extends Vue {
+  @Prop() url?: string;
+}
 </script>

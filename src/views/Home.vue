@@ -1,44 +1,78 @@
 <template>
-  <div class="home" v-for="img in imgs" :key="img.id">
-    <Gif :url="img.url" />
+  <div id="GridImages" class="container">
+    <Gif
+      v-for="(img, index) in imgs"
+      :key="index"
+      :url="img.images.downsized.url"
+    />
+    <div :class="{ 'is-hidden': !isLoading }" id="loading">
+      <img src="../assets/icons/loading.svg" alt="Loading Animation"/>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
+import { Component, Vue } from "vue-property-decorator";
 import Gif from "@/components/Gif.vue";
+import Response from "@/interfaces/response";
+import axios, { AxiosResponse } from "axios";
 
-export default {
-  name: "home",
+@Component({
   components: {
     Gif
-  },
-  data() {
-    return {
-      imgs: []
-    };
-  },
-  methods: {
-    getGifs() {
-      fetch(
-        "https://api.giphy.com/v1/gifs/trending?api_key=gD8d7HmBLpKfqxO2T612MwmMWMeLzzlF&limit=25&rating=g",
-        {
-          method: "get",
-          headers: {
-            "Access-Control-Allow-Origin": "*"
-          },
-          mode: "cors"
-        }
-      )
-        .then(response => response.json())
-        .then(response => {
-          if (response.meta.status === 200) {
-            this.imgs = response.data;
-          }
-        });
-    }
-  },
-  created: function() {
-    this.getGifs();
   }
-};
+})
+export default class Home extends Vue {
+  private imgs: [] = [];
+  private page = this.$route.params.page
+    ? parseInt(this.$route.params.page, 10)
+    : 1;
+  private isLoading = false;
+
+  public async getGifs() {
+    const apikey = process.env.VUE_APP_GIHPY_API_KEY;
+    const limit = 25;
+    const offset = (this.page - 1) * limit;
+
+    this.isLoading = true;
+
+    await axios
+      .get(
+        `//api.giphy.com/v1/gifs/trending?api_key=${apikey}&limit=${limit}&offset=${offset}&rating=g`
+      )
+      .then((value: AxiosResponse<Response>) => {
+        this.appendImages(value.data.data);
+      })
+      .catch(error => console.log(error));
+
+    this.isLoading = false;
+  }
+
+  private appendImages(data: []) {
+    data.forEach(value => this.imgs.push(value));
+  }
+
+  scroll() {
+    window.onscroll = () => {
+      const bottomOfWindow =
+        document.documentElement.scrollTop + window.innerHeight ===
+        document.documentElement.offsetHeight;
+      if (bottomOfWindow) {
+        this.page += 1;
+        this.getGifs();
+      }
+    };
+  }
+
+  beforeMounted() {
+    if (isNaN(this.page)) {
+      this.$router.replace("/not-found");
+    }
+  }
+
+  mounted() {
+    this.getGifs();
+    this.scroll();
+  }
+}
 </script>
