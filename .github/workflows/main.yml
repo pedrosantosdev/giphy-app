@@ -28,10 +28,12 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-
+      - name: Install dependencies
+        run: npm install # will run `npm install` command
       - name: Lint Run
-        run: npm run lint # will run `yarn run lint` command
+        run: npm run lint # will run `npm run lint` command
       - name: Unit Test Run
-        run: npm test:unit # will run `yarn run test:unit` command
+        run: npm test:unit # will run `npm run test:unit` command
       - name: Cypress run
         uses: cypress-io/github-action@v2
         with:
