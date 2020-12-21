@@ -1,0 +1,74 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Lint, Test and Build
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2 # setup the repository in the runner
+      - name: Setup Node.js # setup Node.js in the runner
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+      - name: Install dependencies
+        run: npm ci
+      - name: Lint Run
+        run: npm run lint
+      - name: Unit Test Run
+        run: npm run test:unit # run the tests
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          start: npm run serve
+          wait-on: http://localhost:8080/
+          config_file: cypress.json
+          spec: "tests/e2e/**/*"
+        env:
+          CYPRESS_baseUrl: http://localhost:8080/
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v2
+        with:
+          name: code-coverage-report
+          path: tests/e2e/videos/*
+
+  build:
+     needs: [lint-and-test]
+     runs-on: ubuntu-latest
+     steps:
+      - uses: actions/checkout@v2 # setup the repository in the runner
+      - name: Setup Node.js # setup Node.js in the runner
+        uses: actions/setup-node@v1
+        with:
+          node-version: '12'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-node-
+      - name: Install dependencies and Build Project
+        run: npm ci && npm run build --if-present --production # build the project
+      - name: Archive production artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-without-markdown
+          path: |
+            dist
+            !dist/**/*.md
