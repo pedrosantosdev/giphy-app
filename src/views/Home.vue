@@ -1,5 +1,5 @@
 <template>
-  <div id="GridImages" class="container">
+  <div id="GridImages" class="container" v-if="imgs.length">
     <Gif
       v-for="(img, index) in imgs"
       :key="index"
@@ -8,6 +8,9 @@
     <div :class="{ 'is-hidden': !isLoading }" id="loading">
       <img src="../assets/icons/loading.svg" alt="Loading Animation"/>
     </div>
+  </div>
+  <div v-else>
+    <h1>No results found</h1>
   </div>
 </template>
 
