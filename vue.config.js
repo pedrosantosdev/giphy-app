@@ -1,3 +1,5 @@
 module.exports = {
-  publicPath: "./"
+  publicPath: "./",
+  assetsDir: "static",
+  lintOnSave: process.env.NODE_ENV !== "production"
 };
