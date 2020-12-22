@@ -1,1 +1,3 @@
 * text eol=lf
+*.jpg diff=exif
+*.png diff=exif
