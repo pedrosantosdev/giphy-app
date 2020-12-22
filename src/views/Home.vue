@@ -30,6 +30,7 @@ import { Component } from "vue-property-decorator";
 import Gif from "@/components/Gif.vue";
 import Navbar from "@/components/Navbar.vue";
 import GiphyService from "@/api/giphy.service";
+import IGif from "@/interfaces/gif";
 
 @Component({
   components: {
@@ -38,7 +39,7 @@ import GiphyService from "@/api/giphy.service";
   }
 })
 export default class Home extends Vue {
-  private imgs: [] = [];
+  private imgs: IGif[] = [];
   private page = this.$route.params.page
     ? parseInt(this.$route.params.page, 10)
     : 1;
@@ -71,8 +72,8 @@ export default class Home extends Vue {
     this.appendImages(response.data);
   }
 
-  private appendImages(data: []) {
-    data.forEach(value => this.imgs.push(value));
+  private appendImages(data: IGif[]) {
+    data.forEach((value: IGif) => this.imgs.push(value));
   }
 
   scroll() {
