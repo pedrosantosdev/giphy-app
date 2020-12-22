@@ -47,8 +47,6 @@ export default class Home extends Vue {
   private limit = 25;
   private max = this.limit;
   private hasMore = true;
-  protected apikey = process.env.VUE_APP_GIHPY_API_KEY;
-  protected uri = "//api.giphy.com/v1/gifs";
   private giphyService: GiphyService;
 
   constructor() {
