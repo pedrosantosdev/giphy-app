@@ -1,4 +1,4 @@
-export default interface IResponse<T> {
+export default interface Response<T> {
   data: T;
   meta: {
     msg: string;

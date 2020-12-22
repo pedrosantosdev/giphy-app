@@ -36,6 +36,7 @@ jobs:
         shell: bash
         env:
           NODE_ENV: ${{secrets.NODE_ENV}}
+          VUE_APP_GIHPY_API_KEY: ${{secrets.VUE_APP_GIHPY_API_KEY}}
       - name: Unit Test Run
         run: npm run test:unit # will run `npm run test:unit` command
       - name: Cypress run

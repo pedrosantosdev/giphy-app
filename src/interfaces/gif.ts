@@ -1,4 +1,4 @@
-export default interface IGif {
+export default interface Gif {
   type: string;
   id: string;
   url: string;
@@ -6,14 +6,14 @@ export default interface IGif {
   rating: string;
   title: string;
   images: {
-    downsized: IImage;
-    downsized_small: IImage;
-    original: IImage;
-    looping: IImage;
+    downsized: Image;
+    downsized_small: Image;
+    original: Image;
+    looping: Image;
   };
 }
 
-interface IImage {
+interface Image {
   url: string;
   width?: string;
   height?: string;
