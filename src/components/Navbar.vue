@@ -9,8 +9,9 @@
         class="input"
         v-model="searchText"
         placeholder="Search"
+        v-on:keyup.enter="$emit('search', searchText)"
       />
-      <button class="btn" @click="onSearch(searchText)">
+      <button class="btn" @click="$emit('search', searchText)">
         <i class="fas fa-search"></i>
       </button>
     </div>
@@ -19,16 +20,10 @@
 
 <script lang="ts">
 export default {
-  name: "Navbar",
   data() {
     return {
       searchText: ""
     };
-  },
-  methods: {
-    onSearch(text: string) {
-      this.$emit("search", text);
-    }
   }
 };
 </script>

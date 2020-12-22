@@ -1,19 +1,26 @@
 <template>
   <div>
     <Navbar @search="onSearch" />
-    <div id="GridImages" class="container" v-if="imgs.length">
-      <Gif
-        v-for="(img, index) in imgs"
-        :key="index"
-        :url="img.images.downsized.url"
-      />
-      <div :class="{ 'is-hidden': !isLoading }" id="loading">
-        <img src="../assets/icons/loading.svg" alt="Loading Animation" />
+    <transition name="fade" mode="out-in">
+      <div
+        key="GridImages"
+        id="GridImages"
+        class="container"
+        v-if="imgs.length || isLoading"
+      >
+        <Gif
+          v-for="(img, index) in imgs"
+          :key="index"
+          :url="img.images.downsized.url"
+        />
+        <div :class="{ 'is-hidden': !isLoading }" id="loading">
+          <img src="../assets/icons/loading.svg" alt="Loading Animation" />
+        </div>
       </div>
-    </div>
-    <div v-else>
-      <h1>No results found</h1>
-    </div>
+      <div key="Empty-Results" v-else class="full-size">
+        <h1>No results found</h1>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -37,7 +44,6 @@ export default class Home extends Vue {
     : 1;
   private isLoading = false;
   private search = "";
-  private isAppend = true;
   private limit = 25;
   private max = this.limit;
   private hasMore = true;
@@ -47,7 +53,7 @@ export default class Home extends Vue {
   public onSearch(value: string) {
     this.page = 1;
     this.max = this.limit;
-    this.isAppend = false;
+    this.imgs = [];
     this.search = value;
     this.getGifs();
   }
@@ -66,18 +72,13 @@ export default class Home extends Vue {
       .get(uri)
       .then((value: AxiosResponse<Response>) => {
         const response = value.data;
-        if (this.isAppend) {
-          this.appendImages(response.data);
-        } else {
-          this.imgs = response.data;
-        }
+        this.appendImages(response.data);
         this.max = response.pagination.total_count;
         this.hasMore = this.max > offset;
       })
       .catch(error => console.log(error));
 
     this.isLoading = false;
-    this.isAppend = true;
   }
 
   private appendImages(data: []) {
@@ -86,8 +87,10 @@ export default class Home extends Vue {
 
   scroll() {
     window.onscroll = () => {
+      const currentPosition =
+        document.documentElement.scrollTop + window.innerHeight;
       const bottomOfWindow =
-        document.documentElement.scrollTop + window.innerHeight ===
+        currentPosition + window.innerHeight * 0.4 >=
         document.documentElement.offsetHeight;
       if (bottomOfWindow && this.hasMore) {
         this.page += 1;
