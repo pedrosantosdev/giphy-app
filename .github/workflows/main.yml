@@ -32,6 +32,10 @@ jobs:
         run: npm install # will run `npm install` command
       - name: Lint Run
         run: npm run lint # will run `npm run lint` command
+      - run: 'echo "$NODE_ENV" > key'
+        shell: bash
+        env:
+          NODE_ENV: ${{secrets.NODE_ENV}}
       - name: Unit Test Run
         run: npm run test:unit # will run `npm run test:unit` command
       - name: Cypress run
