@@ -9,7 +9,7 @@
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
     "ghp-deploy": "push-dir --dir=dist --branch=gh-pages --cleanup",
-    "pwa-icon-generate": "vue-asset-generate -a src/assets/logo.png -o public/img/icons"
+    "pwa-icon-generate": "vue-asset-generate -a src/assets/logo.png -o public/img/icons && mv public/img/icons/manifest.json public/img/icons/favicon.ico public"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
