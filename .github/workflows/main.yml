@@ -44,14 +44,14 @@ jobs:
         with:
           start: npm run serve
           wait-on: http://localhost:8080/
-          config_file: cypress.json
+          config-file: cypress.json
           spec: "tests/e2e/**/*"
         env:
           CYPRESS_baseUrl: http://localhost:8080/
       - name: Archive code coverage results
         uses: actions/upload-artifact@v2
         with:
-          name: code-coverage-report
+          name: Cypress-report-coverage
           path: tests/e2e/videos/*
 
   build:
