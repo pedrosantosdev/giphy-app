@@ -5,32 +5,31 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue } from 'vue-property-decorator';
+import { ENotificationMsgType } from '@/interfaces/notification';
 
 @Component
 export default class Notification extends Vue {
-  mounted() {
-    console.log('Montei');
-  }
-
   get notification() {
-    return this.$store.state.notification.notification;
+    return this.$store.state.notification;
   }
 
-  get show() {
-    return this.notification.show;
+  get show(): boolean {
+    return this.notification ? this.notification.show : false;
   }
 
-  get msg() {
-    return this.notification.msg;
+  get msg(): string {
+    return this.notification ? this.notification.msg : '';
   }
 
-  get type() {
-    return this.notification.type;
+  get type(): ENotificationMsgType {
+    return this.notification
+      ? this.notification.type
+      : ENotificationMsgType.Info;
   }
 
-  get time() {
-    return this.notification.time;
+  get time(): number {
+    return this.notification ? this.notification.time : 1000;
   }
 
   get bgColor(): string {

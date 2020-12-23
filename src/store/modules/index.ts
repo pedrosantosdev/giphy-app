@@ -1,4 +1,4 @@
-import NotificationModule from "./NotificationModule";
+import NotificationModule from './NotificationModule';
 // import GifModule from "./GifModuleModule";
 
 export const modules = {

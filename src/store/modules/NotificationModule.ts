@@ -1,21 +1,21 @@
-import { VuexModule, Module, Action, Mutation } from "vuex-module-decorators";
-import { ENotificationMsgType } from "@/interfaces/notification";
+import { VuexModule, Module, Action, Mutation } from 'vuex-module-decorators';
+import { ENotificationMsgType } from '@/interfaces/notification';
 
 const defaultStateNotification = {
-  msg: "Ops",
-  type: "info",
+  msg: 'Ops',
+  type: 'info',
   time: 1000,
   show: false
 };
 
 @Module({ namespaced: true })
 export default class NotificationModule extends VuexModule {
-  public msg = "Ops";
-  public type = ENotificationMsgType.Info;
-  public time = 1000;
-  public show = true;
+  private msg = 'Ops';
+  private type = ENotificationMsgType.Info;
+  private time = 1000;
+  private show = false;
 
-  get notification() {
+  get object() {
     return {
       msg: this.msg,
       type: this.type,
@@ -47,16 +47,16 @@ export default class NotificationModule extends VuexModule {
   @Action
   public showNotification(payload: typeof defaultStateNotification) {
     const context = this.context;
-    context.dispatch("", payload);
+    context.dispatch('', payload);
     setTimeout(function() {
-      context.dispatch("ActionSetNotification", defaultStateNotification);
+      context.dispatch('setNotification', defaultStateNotification);
     }, payload.time);
   }
   @Action
   public setNotification(payload: typeof defaultStateNotification) {
-    this.context.commit("setMsg", payload.msg);
-    this.context.commit("setType", payload.type);
-    this.context.commit("setTime", payload.time);
-    this.context.commit("setShow", payload.show);
+    this.context.commit('setMsg', payload.msg);
+    this.context.commit('setType', payload.type);
+    this.context.commit('setTime', payload.time);
+    this.context.commit('setShow', payload.show);
   }
 }

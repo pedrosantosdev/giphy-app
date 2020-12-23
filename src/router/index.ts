@@ -1,29 +1,29 @@
-import Vue from "vue";
-import VueRouter, { RouteConfig } from "vue-router";
-import Home from "../views/Home.vue";
+import Vue from 'vue';
+import VueRouter, { RouteConfig } from 'vue-router';
+import Home from '../views/Home.vue';
 
 Vue.use(VueRouter);
 
 const routes: Array<RouteConfig> = [
   {
-    path: "/",
-    name: "Home",
+    path: '/',
+    name: 'Home',
     component: Home
   },
   {
-    path: "/page/:page",
-    name: "Home Page Number",
+    path: '/page/:page',
+    name: 'Home Page Number',
     component: Home
   },
   {
-    path: "*",
-    name: "404",
-    component: () => import("../views/404.vue")
+    path: '*',
+    name: '404',
+    component: () => import('../views/404.vue')
   }
 ];
 
 const router = new VueRouter({
-  mode: "history",
+  mode: 'history',
   base: process.env.BASE_URL,
   routes
 });

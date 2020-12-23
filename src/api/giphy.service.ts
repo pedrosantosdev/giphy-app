@@ -1,11 +1,11 @@
-import IResponse from "@/interfaces/response";
-import ITermObject from "@/interfaces/term-object";
-import IGif from "@/interfaces/gif";
-import axios, { AxiosResponse } from "axios";
+import IResponse from '@/interfaces/response';
+import ITermObject from '@/interfaces/term-object';
+import IGif from '@/interfaces/gif';
+import axios, { AxiosResponse } from 'axios';
 
 export default class GiphyService {
   protected apikey = process.env.VUE_APP_GIHPY_API_KEY;
-  protected uri = "//api.giphy.com/v1/gifs";
+  protected uri = '//api.giphy.com/v1/gifs';
   /* eslint-disable @typescript-eslint/camelcase */
   private defaultParams = { api_key: this.apikey };
   /* eslint-enable @typescript-eslint/camelcase */
@@ -13,11 +13,11 @@ export default class GiphyService {
   public async getSearch(
     page = 1,
     limit = 25,
-    search = "",
-    rating = "g"
+    search = '',
+    rating = 'g'
   ): Promise<IResponse<IGif[]>> {
     const offset = (page - 1) * limit;
-    const type = search.length ? "search" : "trending";
+    const type = search.length ? 'search' : 'trending';
     let params: {} = { ...this.defaultParams, limit, offset, rating };
     const uri = `${this.uri}/${type}`;
     if (search.length) {
@@ -32,7 +32,7 @@ export default class GiphyService {
   public async getSuggestions(
     page = 1,
     limit = 25,
-    search = ""
+    search = ''
   ): Promise<IResponse<ITermObject[]>> {
     const offset = (page - 1) * limit;
     const params: {} = { ...this.defaultParams, limit, offset, q: search };

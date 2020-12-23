@@ -25,11 +25,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import Gif from "@/components/Gif.vue";
-import Navbar from "@/components/Navbar.vue";
-import GiphyService from "@/api/giphy.service";
-import IGif from "@/interfaces/gif";
+import { Component, Vue } from 'vue-property-decorator';
+import Gif from '@/components/Gif.vue';
+import Navbar from '@/components/Navbar.vue';
+import GiphyService from '@/api/giphy.service';
+import IGif from '@/interfaces/gif';
 
 @Component({
   components: {
@@ -43,7 +43,7 @@ export default class Home extends Vue {
     ? parseInt(this.$route.params.page, 10)
     : 1;
   private isLoading = false;
-  private search = "";
+  private search = '';
   private limit = 25;
   private max = this.limit;
   private hasMore = true;
@@ -63,12 +63,12 @@ export default class Home extends Vue {
   }
 
   public async getGifs() {
-    /* this.$store.dispatch("showNotification", {
-      msg: "Hi There!",
-      type: "success",
+    this.$store.dispatch('notification/showNotification', {
+      msg: 'Hi There!',
+      type: 'success',
       time: 2000,
       show: true
-    }); */
+    });
     this.isLoading = true;
     const response = await this.giphyService
       .getSearch(this.page, this.limit, this.search)
@@ -97,7 +97,7 @@ export default class Home extends Vue {
 
   beforeMounted() {
     if (isNaN(this.page)) {
-      this.$router.replace("/not-found");
+      this.$router.replace('/not-found');
     }
   }
 
