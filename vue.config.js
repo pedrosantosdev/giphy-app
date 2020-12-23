@@ -8,5 +8,11 @@ module.exports = {
     msTileColor: "#222222",
     appleMobileWebAppCapable: "yes",
     appleMobileWebAppStatusBarStyle: "black"
+  },
+  chainWebpack: config => {
+    config.plugin("html").tap(args => {
+      args[0].title = "Giphy Search App";
+      return args;
+    });
   }
 };
