@@ -25,8 +25,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { Component } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import Gif from "@/components/Gif.vue";
 import Navbar from "@/components/Navbar.vue";
 import GiphyService from "@/api/giphy.service";
@@ -64,6 +63,12 @@ export default class Home extends Vue {
   }
 
   public async getGifs() {
+    /* this.$store.dispatch("showNotification", {
+      msg: "Hi There!",
+      type: "success",
+      time: 2000,
+      show: true
+    }); */
     this.isLoading = true;
     const response = await this.giphyService
       .getSearch(this.page, this.limit, this.search)

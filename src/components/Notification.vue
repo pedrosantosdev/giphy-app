@@ -5,19 +5,33 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-enum EMsgType {
-  Alert = "alert",
-  Info = "info",
-  Success = "success",
-  Warning = "warning"
-}
+import { Component, Vue } from "vue-property-decorator";
 
+@Component
 export default class Notification extends Vue {
-  private show = false;
-  private msg = "Ops";
-  private type = EMsgType.Alert;
-  private time = 1000;
+  mounted() {
+    console.log('Montei');
+  }
+
+  get notification() {
+    return this.$store.state.notification.notification;
+  }
+
+  get show() {
+    return this.notification.show;
+  }
+
+  get msg() {
+    return this.notification.msg;
+  }
+
+  get type() {
+    return this.notification.type;
+  }
+
+  get time() {
+    return this.notification.time;
+  }
 
   get bgColor(): string {
     return `bg-${this.type}`;
