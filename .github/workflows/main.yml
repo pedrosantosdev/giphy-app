@@ -33,11 +33,13 @@ jobs:
       - name: Lint Run
         run: npm run lint # will run `npm run lint` command
       - name: Create .env
-        run: 'echo "NODE_ENV=development \n VUE_APP_GIHPY_API_KEY: $VUE_APP_GIHPY_API_KEY" > .env'
+        run: |
+          echo "NODE_ENV: development" >> .env
+          echo "VUE_APP_GIHPY_API_KEY: $VUE_APP_GIHPY_API_KEY" >> .env
         shell: bash
         env:
-          NODE_ENV: ${{secrets.NODE_ENV}}
-          VUE_APP_GIHPY_API_KEY: ${{secrets.VUE_APP_GIHPY_API_KEY}}
+          NODE_ENV: ${{ secrets.NODE_ENV }}
+          VUE_APP_GIHPY_API_KEY: ${{ secrets.VUE_APP_GIHPY_API_KEY }}
       - name: Bash Test
         run: cat .env
       - name: Unit Test Run
