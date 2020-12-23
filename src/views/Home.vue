@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home">
     <Navbar @search="onSearch" :search="searchState" />
     <transition name="fade" mode="out-in">
       <div key="GridImages" id="GridImages" class="container" v-if="!isEmpty">
