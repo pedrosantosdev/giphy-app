@@ -28,10 +28,6 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-
-      - name: Install dependencies
-        run: npm install # will run `npm install` command
-      - name: Lint Run
-        run: npm run lint # will run `npm run lint` command
       - name: Create .env
         run: |
           echo "NODE_ENV: development" >> .env
@@ -39,8 +35,10 @@ jobs:
         shell: bash
         env:
           VUE_APP_GIHPY_API_KEY: ${{ secrets.VUE_APP_GIHPY_API_KEY }}
-      - name: Bash Test
-        run: cat .env
+      - name: Install dependencies
+        run: npm install # will run `npm install` command
+      - name: Lint Run
+        run: npm run lint # will run `npm run lint` command
       - name: Unit Test Run
         run: npm run test:unit # will run `npm run test:unit` command
       - name: Cypress run
@@ -62,7 +60,10 @@ jobs:
      needs: [lint-and-test]
      runs-on: ubuntu-latest
      steps:
-      - uses: actions/checkout@v2 # setup the repository in the runner
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1 # If you're using actions/checkout@v2 you must set persist-credentials to false in most cases for the deployment to work correctly.
+        with:
+          persist-credentials: false
       - name: Setup Node.js # setup Node.js in the runner
         uses: actions/setup-node@v1
         with:
@@ -79,8 +80,6 @@ jobs:
         shell: bash
         env:
           VUE_APP_GIHPY_API_KEY: ${{ secrets.VUE_APP_GIHPY_API_KEY }}
-      - name: Bash Test
-        run: cat .env
       - name: Install dependencies and Build Project
         run: npm ci && npm run build --if-present --production
       - name: Archive production artifacts
@@ -90,3 +89,10 @@ jobs:
           path: |
             dist
             !dist/**/*.md
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages # The branch the action should deploy to.
+          FOLDER: dist # The folder the action should deploy.
+          CLEAN: true # Automatically remove deleted files from the deploy branch
