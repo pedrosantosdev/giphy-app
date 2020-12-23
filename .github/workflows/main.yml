@@ -71,6 +71,7 @@ jobs:
           restore-keys: ${{ runner.os }}-node-
       - name: Install dependencies and Build Project
         run: |
+          npm install -g @vue/cli 
           npm ci
           npm run pwa-icon-generate
           npm run build --production
