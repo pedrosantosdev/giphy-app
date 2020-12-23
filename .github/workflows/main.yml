@@ -38,7 +38,6 @@ jobs:
           echo "VUE_APP_GIHPY_API_KEY: $VUE_APP_GIHPY_API_KEY" >> .env
         shell: bash
         env:
-          NODE_ENV: ${{ secrets.NODE_ENV }}
           VUE_APP_GIHPY_API_KEY: ${{ secrets.VUE_APP_GIHPY_API_KEY }}
       - name: Bash Test
         run: cat .env
@@ -73,12 +72,6 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-
-      - name: Create .env
-        run: 'echo "$NODE_ENV" > .env'
-        shell: bash
-        env:
-          NODE_ENV: ${{secrets.NODE_ENV}}
-          VUE_APP_GIHPY_API_KEY: ${{secrets.VUE_APP_GIHPY_API_KEY}}
       - name: Bash Test
         run: ls -la .env
       - name: Install dependencies and Build Project
