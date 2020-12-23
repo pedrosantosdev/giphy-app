@@ -4,6 +4,20 @@ import IGif from '@/interfaces/gif';
 import axios, { AxiosResponse } from 'axios';
 
 export default class GiphyService {
+  // Singleton
+  private static instance: GiphyService;
+  /* eslint-disable @typescript-eslint/no-empty-function*/
+  private constructor() {}
+  /* eslint-enable @typescript-eslint/no-empty-function*/
+  public static getInstance(): GiphyService {
+    if (!GiphyService.instance) {
+      GiphyService.instance = new GiphyService();
+    }
+
+    return GiphyService.instance;
+  }
+
+  // Class
   protected apikey = process.env.VUE_APP_GIHPY_API_KEY;
   protected uri = '//api.giphy.com/v1/gifs';
   /* eslint-disable @typescript-eslint/camelcase */

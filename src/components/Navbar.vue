@@ -19,11 +19,10 @@
 </template>
 
 <script lang="ts">
-export default {
-  data() {
-    return {
-      searchText: ''
-    };
-  }
-};
+import { Component, Prop, Vue } from 'vue-property-decorator';
+@Component
+export default class NavBar extends Vue {
+  @Prop() search?: string = '';
+  private searchText = this.search;
+}
 </script>

@@ -1,13 +1,8 @@
 <template>
   <div>
-    <Navbar @search="onSearch" />
+    <Navbar @search="onSearch" :search="searchState" />
     <transition name="fade" mode="out-in">
-      <div
-        key="GridImages"
-        id="GridImages"
-        class="container"
-        v-if="imgs.length || isLoading"
-      >
+      <div key="GridImages" id="GridImages" class="container" v-if="!isEmpty">
         <Gif
           v-for="(img, index) in imgs"
           :key="index"
@@ -28,7 +23,6 @@
 import { Component, Vue } from 'vue-property-decorator';
 import Gif from '@/components/Gif.vue';
 import Navbar from '@/components/Navbar.vue';
-import GiphyService from '@/api/giphy.service';
 import IGif from '@/interfaces/gif';
 
 @Component({
@@ -38,46 +32,59 @@ import IGif from '@/interfaces/gif';
   }
 })
 export default class Home extends Vue {
-  private imgs: IGif[] = [];
   private page = this.$route.params.page
     ? parseInt(this.$route.params.page, 10)
     : 1;
-  private isLoading = false;
   private search = '';
-  private limit = 25;
   private max = this.limit;
-  private hasMore = true;
-  private giphyService: GiphyService;
 
-  constructor() {
-    super();
-    this.giphyService = new GiphyService();
+  get stateGif() {
+    return this.$store.state.gif;
+  }
+
+  get hasMore() {
+    return this.stateGif.hasMore;
+  }
+
+  get isEmpty() {
+    return this.stateGif.isEmpty;
+  }
+
+  get limit() {
+    return this.stateGif.limit;
+  }
+
+  get isLoading() {
+    return this.stateGif.isLoading;
+  }
+
+  get imgs(): IGif[] {
+    return this.stateGif.imgs;
+  }
+
+  get searchState() {
+    return this.stateGif.search;
+  }
+
+  get hasError() {
+    return this.stateGif.hasError;
   }
 
   public onSearch(value: string) {
-    this.page = 1;
     this.max = this.limit;
-    this.imgs = [];
-    this.search = value;
-    this.getGifs();
-  }
-
-  public async getGifs() {
-    this.$store.dispatch('notification/showNotification', {
-      msg: 'Hi There!',
-      type: 'success',
-      time: 2000
+    this.$store.dispatch('gif/getGifs', {
+      limit: this.limit,
+      search: value,
+      append: false
     });
-    this.isLoading = true;
-    const response = await this.giphyService
-      .getSearch(this.page, this.limit, this.search)
-      .finally(() => (this.isLoading = false));
-
-    this.appendImages(response.data);
   }
 
-  private appendImages(data: IGif[]) {
-    data.forEach((value: IGif) => this.imgs.push(value));
+  public getGifs() {
+    this.$store.dispatch('gif/getGifs', {
+      page: this.page,
+      limit: this.limit,
+      search: this.searchState
+    });
   }
 
   scroll() {
@@ -87,7 +94,7 @@ export default class Home extends Vue {
       const bottomOfWindow =
         currentPosition + window.innerHeight * 0.4 >=
         document.documentElement.offsetHeight;
-      if (bottomOfWindow && this.hasMore) {
+      if (bottomOfWindow && !this.isLoading && this.hasMore && !this.hasError) {
         this.page += 1;
         this.getGifs();
       }
@@ -101,6 +108,11 @@ export default class Home extends Vue {
   }
 
   mounted() {
+    this.$store.dispatch('notification/showNotification', {
+      msg: 'Hi There!',
+      type: 'success',
+      time: 2000
+    });
     this.getGifs();
     this.scroll();
   }

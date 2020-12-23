@@ -15,15 +15,6 @@ export default class NotificationModule extends VuexModule {
   private time = 1000;
   private show = false;
 
-  get object() {
-    return {
-      msg: this.msg,
-      type: this.type,
-      time: this.time,
-      show: this.show
-    };
-  }
-
   @Mutation
   public setMsg(msg: string) {
     this.msg = msg;
@@ -46,7 +37,7 @@ export default class NotificationModule extends VuexModule {
 
   @Action
   public showNotification(payload: typeof defaultStateNotification) {
-    payload = {...payload , show: true};
+    payload = { ...payload, show: true };
     const context = this.context;
     context.dispatch('setNotification', payload);
     setTimeout(function() {
