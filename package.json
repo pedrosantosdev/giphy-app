@@ -8,7 +8,7 @@
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
-    "pwa-icon-generate": "vue-asset-generate -a src/assets/logo.png -o public/img/icons && mv public/img/icons/manifest.json public/img/icons/favicon.ico public"
+    "pwa-icon-generate": "npx vue-pwa-asset-generator -a src/assets/logo.png -o public/img/icons && mv public/img/icons/manifest.json public/img/icons/favicon.ico public"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
