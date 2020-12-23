@@ -1,6 +1,6 @@
 <template>
   <transition name="fade">
-    <div class="notification" :class="bgColor" v-if="show">Hi There</div>
+    <div class="notification" :class="bgColor" v-if="show">{{ msg }}</div>
   </transition>
 </template>
 

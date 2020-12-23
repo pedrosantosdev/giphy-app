@@ -66,8 +66,7 @@ export default class Home extends Vue {
     this.$store.dispatch('notification/showNotification', {
       msg: 'Hi There!',
       type: 'success',
-      time: 2000,
-      show: true
+      time: 2000
     });
     this.isLoading = true;
     const response = await this.giphyService

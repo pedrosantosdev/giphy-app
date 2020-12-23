@@ -46,8 +46,9 @@ export default class NotificationModule extends VuexModule {
 
   @Action
   public showNotification(payload: typeof defaultStateNotification) {
+    payload = {...payload , show: true};
     const context = this.context;
-    context.dispatch('', payload);
+    context.dispatch('setNotification', payload);
     setTimeout(function() {
       context.dispatch('setNotification', defaultStateNotification);
     }, payload.time);
