@@ -32,11 +32,14 @@ jobs:
         run: npm install # will run `npm install` command
       - name: Lint Run
         run: npm run lint # will run `npm run lint` command
-      - run: 'echo "$NODE_ENV" > key'
+      - name: Create .env
+        run: 'echo "NODE_ENV=development \n VUE_APP_GIHPY_API_KEY: $VUE_APP_GIHPY_API_KEY" > .env'
         shell: bash
         env:
-          NODE_ENV: development
+          NODE_ENV: ${{secrets.NODE_ENV}}
           VUE_APP_GIHPY_API_KEY: ${{secrets.VUE_APP_GIHPY_API_KEY}}
+      - name: Bash Test
+        run: cat .env
       - name: Unit Test Run
         run: npm run test:unit # will run `npm run test:unit` command
       - name: Cypress run
@@ -68,7 +71,8 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-
-      - run: 'echo "$NODE_ENV" > key'
+      - name: Create .env
+        run: 'echo "$NODE_ENV" > .env'
         shell: bash
         env:
           NODE_ENV: ${{secrets.NODE_ENV}}
