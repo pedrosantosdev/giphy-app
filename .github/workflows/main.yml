@@ -69,11 +69,15 @@ jobs:
           path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: ${{ runner.os }}-node-
-      - name: Install dependencies and Build Project
+      - name: Install dependencies and Pwa Generate
         run: |
           npm install -g @vue/cli 
           npm ci
           npm run pwa-icon-generate
+        env:
+          NODE_ENV: production
+      - name: Build Project
+        run: |
           npm run build --production
         env:
           NODE_ENV: production
