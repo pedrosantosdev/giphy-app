@@ -6,7 +6,9 @@
         <Gif
           v-for="(img, index) in imgs"
           :key="index"
-          :url="img.images.downsized.url"
+          :url="img.images.original.webp"
+          :width="img.images.original.width"
+          :height="img.images.original.height"
         />
         <div :class="{ 'is-hidden': !isLoading }" id="loading">
           <img src="../assets/icons/loading.svg" alt="Loading Animation" />
