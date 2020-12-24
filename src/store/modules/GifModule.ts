@@ -92,7 +92,6 @@ export default class GifModule extends VuexModule {
       .then(response => {
         this.context.commit('setImgs', response.data);
         this.context.commit('setMax', response.pagination.total_count);
-        this.context.commit('setHasMore');
       })
       .catch(requestError => {
         const error = requestError.response;
@@ -113,6 +112,10 @@ export default class GifModule extends VuexModule {
           { root: true }
         );
       })
-      .finally(() => this.context.commit('setIsLoading', false));
+      .finally(() => {
+        this.context.commit('setIsLoading', false);
+        this.context.commit('setHasMore');
+        this.context.commit('setIsEmpty');
+      });
   }
 }
