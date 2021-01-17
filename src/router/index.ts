@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import VueRouter, { RouteConfig } from 'vue-router';
-import Home from '../views/Home.vue';
 
 Vue.use(VueRouter);
 
@@ -8,17 +7,21 @@ const routes: Array<RouteConfig> = [
   {
     path: '/',
     name: 'Home',
-    component: Home
+    component: () =>
+      import(/* webpackChunkName: "home-page" */ '../views/Home.vue'),
+    children: [{ path: 'page/:page' }]
   },
   {
-    path: '/page/:page',
-    name: 'Home Page Number',
-    component: Home
+    path: '/login',
+    name: 'Login Page',
+    component: () =>
+      import(/* webpackChunkName: "home-page" */ '../views/Login.vue')
   },
   {
     path: '*',
     name: '404',
-    component: () => import('../views/404.vue')
+    component: () =>
+      import(/* webpackChunkName: "error-pages" */ '../views/404.vue')
   }
 ];
 

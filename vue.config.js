@@ -14,5 +14,8 @@ module.exports = {
       args[0].title = 'Giphy Search App';
       return args;
     });
+  },
+  css: {
+    requireModuleExtension: false
   }
 };

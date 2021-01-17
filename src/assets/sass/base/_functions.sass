@@ -1,0 +1,30 @@
+$theme-colors-map: ()
+$prop-map: (background: bg, color: text)
+
+// Transform a color into Base, Light, Dark , and Trans Color Map
+@function create_colour_map($color, $percentage, $opacity)
+    $map: ( base: $color, light: lighten($color, $percentage), dark: darken($color, $percentage), trans: transparentize($color, $opacity) )
+    @return $map
+
+// Execute the map $color and return map of colors with create_colour_map
+@each $key, $value in $theme-colors
+  $map: ()
+  $map: map-merge($map, ($key: create_colour_map($value, 15%, 0.5)))
+  $theme-colors-map: map-merge($theme-colors-map, $map)
+
+@mixin create_prop($prop, $color, $modifier, $value)
+  $prop-initial: map-get($prop-map, $prop)
+  @if $modifier == base
+    .#{$prop-initial}--#{$color}
+      #{$prop-initial}: $value
+  @else
+    .#{$prop-initial}--#{$color}__#{$modifier}
+      #{$prop-initial}: $value
+
+@each $key, $value in $theme-colors-map
+  @each $keyMap, $valueMap in $value
+    @if map-has-key($theme-colors-map, $key)
+      @include create_prop(background, $key, $keyMap, $value)
+      @include create_prop(color, $key, $keyMap, $value)
+    @else
+      @warn "The key ´#{$key} isn’t defined in the map $config´"

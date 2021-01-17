@@ -1,28 +1,122 @@
 *
-  outline: 0;
+  box-sizing: border-box
 
 body
-  background-color: $black;
-  margin: 0 auto;
+  background-color: $black
+  margin: 0 auto
+  height: 100vh
+  display: grid
+  font-family: Roboto
+  -webkit-text-size-adjust: 100%
+  -webkit-font-smoothing: antialiased
 
 .is-hidden
-  display: none !important;
+  display: none !important
 
 .is-show
-  display: block !important;
+  display: block !important
 
 .full-size
-  width: 100vw;
-  height: 100vh;
+  width: 100vw
+  height: 100vh
 
-.bg-alert
-    background-color: $alert;
+.btn
+  outline: 0
+  padding: 15px 30px
+  @include border-radius(10px)
+  border: 0
+  width: 100%
+  max-width: fit-content
 
-.bg-info
-    background-color: $info;
+/*========================*/
+/*==Floating Input Text===*/
+/*========================*/
+label.input-text
+  position: relative
+  margin: auto
+  width: 100%
+  max-width: 280px
+  border-radius: 3px
+  overflow: hidden
 
-.bg-success
-    background-color: $success;
+  span.label
+    position: absolute
+    top: 20px
+    left: 12px
+    font-size: 16px
+    color: rgba($success,.5)
+    font-weight: 500
+    transform-origin: 0 0
+    transform: translate3d(0,0,0)
+    transition: all .2s ease
+    pointer-events: none
 
-.bg-warning
-    background-color: $warning;
+  .focus-bg
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    background: rgba($success,.05)
+    z-index: -1
+    transform: scaleX(0)
+    transform-origin: left
+
+  input
+    -webkit-appearance: none
+    appearance: none
+    width: 100%
+    border: 0
+    font-family: inherit
+    padding: 16px 12px 0 12px
+    height: 56px
+    font-size: 16px
+    font-weight: 400
+    background: rgba($success,.02)
+    box-shadow: inset 0 -1px 0 rgba($success,.3)
+    color: $success
+    transition: all .15s ease
+
+    &::-webkit-input-placeholder
+      color: transparent
+
+    &:-moz-placeholder /* Firefox 18- */
+      color: transparent
+
+    &::-moz-placeholder  /* Firefox 19+ */
+      color: transparent
+
+    &:-ms-input-placeholder
+      color: transparent
+
+    &:hover
+      background: rgba($success,.04)
+      box-shadow: inset 0 -1px 0 rgba($success,.5)
+
+    &:not(:placeholder-shown)
+      color: $info
+
+      & + .label
+        color: rgba($success,.5)
+        transform: translate3d(0,-12px,0) scale(.75)
+
+      &.error
+        color: $alert
+        box-shadow: inset 0 -1px 0 $alert
+
+        & + .label
+          color: $alert
+
+    &:focus
+      background: rgba($success,.05)
+      outline: none
+      box-shadow: inset 0 -2px 0 $info
+      + .label
+        color: $info
+        transform: translate3d(0,-12px,0) scale(.75)
+        + .focus-bg
+          transform: scaleX(1)
+          transition: all .1s ease
+/*=========================*/
+/*=End Floating Input Text=*/
+/*=========================*/

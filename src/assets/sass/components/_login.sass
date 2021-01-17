@@ -1,0 +1,35 @@
+.login-page
+    max-width: 40vw
+    width: 100%
+    margin: 50px auto
+    display: grid
+    grid-template-rows: 30px auto
+    grid-template-columns: auto 70% auto
+    grid-template-areas: ". tabs ." ". content ."
+    border: 2px solid
+    background-color: white
+    @include border-radius(20px)
+    padding: 100px 20px
+
+    .tabs
+        display: grid
+        grid-template-columns: repeat(2, 1fr) 
+        grid-area: tabs
+        margin-bottom: 35px
+
+        .active
+            border-bottom: 1px solid $success
+
+    .register
+        grid-area: content
+        display: flex
+        flex-flow: column
+    
+    .login
+        grid-area: content
+        display: flex
+        flex-flow: column
+
+    .btn
+        align-self: center
+        margin: 5px 0

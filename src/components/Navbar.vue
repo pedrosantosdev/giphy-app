@@ -3,6 +3,10 @@
     <div class="logo">
       <img src="../assets/logo.png" alt="Home Logo" loading="lazy" />
     </div>
+    <div class="links">
+      <router-link to="/">Home</router-link>
+      <router-link to="/login">Register</router-link>
+    </div>
     <div class="search">
       <input
         type="text"
