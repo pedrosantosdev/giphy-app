@@ -1,45 +1,59 @@
 .navbar
-    display: grid;
-    grid-template-rows: auto;
-    grid-template-columns: 40px 1fr 1fr;
-    grid-template-areas: "logo . search";
-    background-color: $white;
-    padding: 10px;
-    position: sticky;
-    top: 0;
+    display: grid
+    grid-template-rows: auto
+    grid-template-columns: 40px 2fr 1fr
+    grid-template-areas: "logo search links"
+    background-color: $white
+    padding: 10px
+    position: sticky
+    top: 0
 
     .logo
-        display: block;
-        max-width: 100%;
-        max-height: 100%;
-        grid-area: logo;
+        display: block
+        max-width: 100%
+        max-height: 100%
+        grid-area: logo
 
         img
-            max-width: 100%;
+            max-width: 100%
     
     .search
-        display: block;
-        position: relative;
-        max-height: 100%;
-        grid-area: search;
-        align-self: center;
-        justify-self: end;
+        display: block
+        position: relative
+        max-height: 100%
+        grid-area: search
+        align-self: center
+        justify-self: end
 
         .input
             @include border-radius(10px)
-            background-color: $white;
-            border: 1px solid darken($white, 15%);
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-            border-right-width: 0;
-            padding: 5px;
-            max-width: 75%;
+            background-color: $white
+            border: 1px solid darken($white, 15%)
+            border-top-right-radius: 0
+            border-bottom-right-radius: 0
+            border-right-width: 0
+            padding: 5px
+            max-width: 75%
         
         .btn
-            padding: 5px;
-            background-color: $white;
-            border-width: 1px;
+            padding: 5px
+            background-color: $white
+            border-width: 1px
             @include border-radius(5px)
-            border-top-left-radius: 0px;
-            border-bottom-left-radius: 0px;
-            max-width: 25%;
+            border-top-left-radius: 0px
+            border-bottom-left-radius: 0px
+            max-width: 25%
+            border: 1px solid darken($white, 25%)
+
+    .links
+        display: flex
+        justify-content: space-evenly
+        position: relative
+        max-height: 100%
+        width: 100%
+        grid-area: links
+        align-self: center
+        justify-self: end
+        
+        a
+            max-width: 10%

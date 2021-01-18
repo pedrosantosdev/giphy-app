@@ -3,10 +3,6 @@
     <div class="logo">
       <img src="../assets/logo.png" alt="Home Logo" loading="lazy" />
     </div>
-    <!-- <div class="links">
-      <router-link to="/">Home</router-link>
-      <router-link to="/login">Register</router-link>
-    </div> -->
     <div class="search">
       <input
         type="text"
@@ -18,6 +14,10 @@
       <button class="btn" @click="$emit('search', searchText)">
         <i class="fas fa-search"></i>
       </button>
+    </div>
+    <div class="links">
+      <router-link to="/">Home</router-link>
+      <router-link to="/login">Login</router-link>
     </div>
   </div>
 </template>
