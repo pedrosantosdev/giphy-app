@@ -82,6 +82,8 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import Input from '@/components/shared/Input.vue';
+import ReactiveForm, { ReactiveFormControl } from '@/utils/form/reactive-form';
+import { Validators } from '@/utils/form/validators';
 
 @Component({
   components: {
@@ -93,27 +95,36 @@ export default class Login extends Vue {
   private password = '';
   private confirmPassword = '';
   private currentPage = 'register';
-  private rules = { username: 'required', password: 'required' };
-  private rules_register = { confirmPassword: 'equalsTo:password' };
+  private loginForm = new ReactiveForm();
+  private registerForm = new ReactiveForm();
 
   get isLogin(): boolean {
     return this.currentPage === 'register' ? false : true;
   }
   get isValid(): boolean {
-    Object.keys(this.rules).forEach(field => {
-      console.log(field);
-    });
-    return false;
+    if (this.isLogin) {
+      return this.loginForm.isValid;
+    } else {
+      return this.registerForm.isValid;
+    }
   }
-
   private changeForm(type = 'register'): void {
-    this.clearFields();
+    if (this.isLogin) {
+      this.loginForm.reset();
+    } else {
+      this.registerForm.reset();
+    }
     this.currentPage = type;
   }
-  private clearFields(): void {
-    this.username = '';
-    this.password = '';
-    this.confirmPassword = '';
+
+  created() {
+    this.loginForm.controls['username'] = new ReactiveFormControl('', [
+      Validators.required
+    ]);
+    this.loginForm.controls['password'] = new ReactiveFormControl('', [
+      Validators.required,
+      Validators.stringLength(8)
+    ]);
   }
 }
 </script>
