@@ -4,12 +4,18 @@ export class Validators {
   }
   static stringLength(min = 0, max = 0) {
     return (value = '') => {
-      let result = null;
+      let result: string | null = null;
       if (min > 0 && (value === null || value.length < min))
-        result = 'Value too short!';
+        result = `Value too short! min:${min}`;
       if (max > 0 && value !== null && value.length > max)
-        result = 'Value too long!';
+        result = `Value too long! max:${max}`;
       return result;
+    };
+  }
+  static equalsTo(compareValue) {
+    return (value = '') => {
+      console.log('equalsTo', value, compareValue, this);
+      return value === compareValue ? null : 'Values Not Equals!';
     };
   }
 }

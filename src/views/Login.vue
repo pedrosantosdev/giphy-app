@@ -71,7 +71,7 @@
           required
           pattern="\S"
         />
-        <button class="btn bg--success text--white" :disabled="!isValid">
+        <button class="btn bg--success text--white" @click="submit('register')">
           Register
         </button>
       </div>
@@ -117,6 +117,11 @@ export default class Login extends Vue {
     this.currentPage = type;
   }
 
+  private submit(type) {
+    this.registerForm.validate();
+    console.log('Submit', type, this.registerForm);
+  }
+
   created() {
     this.loginForm.controls['username'] = new ReactiveFormControl('', [
       Validators.required
@@ -125,6 +130,21 @@ export default class Login extends Vue {
       Validators.required,
       Validators.stringLength(8)
     ]);
+    this.registerForm.controls['username'] = new ReactiveFormControl('', [
+      Validators.required
+    ]);
+    this.registerForm.controls['password'] = new ReactiveFormControl('', [
+      Validators.required,
+      Validators.stringLength(8)
+    ]);
+    this.registerForm.controls['confirmPassword'] = new ReactiveFormControl(
+      '',
+      [
+        Validators.required,
+        Validators.stringLength(8),
+        Validators.equalsTo(this.registerForm.controls['password'].value)
+      ]
+    );
   }
 }
 </script>

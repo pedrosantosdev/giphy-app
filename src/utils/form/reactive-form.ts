@@ -1,17 +1,17 @@
 export class ReactiveFormControl {
   constructor(
-    public value: string | null,
+    public value: string | Blob,
     private validators: Function[] = []
   ) {}
-  public errors: string[] | null = null;
+  public errors: string[] = [];
   //  Clears the form control
   public reset() {
-    this.value = null;
-    this.errors = null;
+    this.value = '';
+    this.errors = [];
   }
   //  Runs the validators
   public validate() {
-    this.errors = null;
+    this.errors = [];
     if (!this.validators || !this.validators.length) return;
     this.validators.forEach(validator => {
       const error: string = validator.call(this, this.value);
@@ -28,7 +28,7 @@ export default class ReactiveForm {
   public get formData(): FormData {
     const retval = new FormData();
     for (const key in this.controls)
-      retval.append(key, this.controls[key].value || null);
+      retval.append(key, this.controls[key].value);
     return retval;
   }
 
@@ -37,11 +37,13 @@ export default class ReactiveForm {
   }
 
   public reset(): void {
-    for (const key in this.controls) this.controls[key].reset();
+    for (const key in this.controls)
+      if (key !== null) this.controls[key].reset();
+      else continue;
   }
 
-  public get errors(): [] | null {
-    const retval: any = {};
+  public get errors(): { [key: string]: string[] } {
+    const retval: { [key: string]: string[] } = {};
     for (const key in this.controls)
       if (this.controls[key].errors !== null)
         retval[key] = this.controls[key].errors;
@@ -49,9 +51,7 @@ export default class ReactiveForm {
   }
 
   public get hasErrors(): boolean {
-    return this.controls.some(control => {
-      if (control.errors) return true;
-    });
+    return !!this.errors;
   }
 
   public get isValid(): boolean {
