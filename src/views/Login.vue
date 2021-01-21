@@ -20,58 +20,48 @@
       <div key="login" v-if="isLogin" class="login">
         <Input
           :label="'Login'"
-          :name="'username'"
+          :formControl="loginForm.controls.username"
           required
           pattern="\S"
-          :has-error="false"
-          :msg-error="'batatinha'"
-          v-model="username"
+          key="login_username"
         />
         <Input
           :label="'Password'"
-          :name="'password'"
           :type="'password'"
-          :has-error="false"
-          :msg-error="'batatinha'"
-          v-model="password"
+          :formControl="loginForm.controls.password"
           required
           pattern="\S"
+          key="login_password"
         />
-        <button class="btn bg--success text--white" :disabled="!isValid">
+        <button class="btn bg--success text--white" @click="submit()">
           Login
         </button>
       </div>
       <div key="register" v-else class="register">
         <Input
           :label="'Login'"
-          :name="'username'"
+          :formControl="registerForm.controls.username"
           required
           pattern="\S"
-          :has-error="false"
-          :msg-error="'batatinha'"
-          v-model="username"
+          key="register_username"
         />
         <Input
           :label="'Password'"
-          :name="'password'"
           :type="'password'"
-          :has-error="false"
-          :msg-error="'batatinha'"
-          v-model="password"
+          :formControl="registerForm.controls.password"
           required
           pattern="\S"
+          key="register_password"
         />
         <Input
           :label="'Confirm Password'"
-          :name="'confirmPassword'"
           :type="'password'"
-          :has-error="false"
-          :msg-error="'batatinha'"
-          v-model="confirmPassword"
+          :formControl="registerForm.controls.confirmPassword"
           required
           pattern="\S"
+          key="register_confirm_password"
         />
-        <button class="btn bg--success text--white" @click="submit('register')">
+        <button class="btn bg--success text--white" @click="submit()">
           Register
         </button>
       </div>
@@ -91,9 +81,6 @@ import { Validators } from '@/utils/form/validators';
   }
 })
 export default class Login extends Vue {
-  private username = '';
-  private password = '';
-  private confirmPassword = '';
   private currentPage = 'register';
   private loginForm = new ReactiveForm();
   private registerForm = new ReactiveForm();
@@ -117,9 +104,21 @@ export default class Login extends Vue {
     this.currentPage = type;
   }
 
-  private submit(type) {
-    this.registerForm.validate();
-    console.log('Submit', type, this.registerForm);
+  private submit() {
+    if (this.isLogin) {
+      this.loginForm.validate();
+    } else {
+      this.registerForm.validate();
+    }
+  }
+
+  private equalsPassword(): string {
+    if (
+      this.registerForm.controls['confirmPassword'].value ===
+      this.registerForm.controls['password'].value
+    )
+      return '';
+    else return 'Password Not Equals';
   }
 
   created() {
@@ -139,11 +138,7 @@ export default class Login extends Vue {
     ]);
     this.registerForm.controls['confirmPassword'] = new ReactiveFormControl(
       '',
-      [
-        Validators.required,
-        Validators.stringLength(8),
-        Validators.equalsTo(this.registerForm.controls['password'].value)
-      ]
+      [Validators.required, Validators.stringLength(8), this.equalsPassword]
     );
   }
 }

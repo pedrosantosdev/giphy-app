@@ -1,8 +1,13 @@
 <template>
   <label class="input-text">
-    <input :type="type" :placeholder="name" :name="name" />
+    <input
+      :type="type"
+      :placeholder="name ? name : 'placeholder'"
+      :name="name"
+      v-model="formControl.value"
+    />
     <span class="label">{{ label }}</span>
-    <span class="error" v-show="hasError">{{ msgError }}</span>
+    <span class="error">{{ formControl.errors }}</span>
     <span class="focus-bg"></span>
   </label>
 </template>
@@ -12,9 +17,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class Input extends Vue {
   @Prop() label?: { type: string; default: 'label' };
-  @Prop() name?: { type: string; default: 'name' };
+  @Prop() name?: { type: string; default: '' };
   @Prop() type?: { type: string; default: 'text' };
-  @Prop() hasError?: { type: boolean; default: false };
-  @Prop() msgError?: { type: string; default: '' };
+  @Prop() formControl?: { value: string; errors: string[] };
 }
 </script>

@@ -12,10 +12,4 @@ export class Validators {
       return result;
     };
   }
-  static equalsTo(compareValue) {
-    return (value = '') => {
-      console.log('equalsTo', value, compareValue, this);
-      return value === compareValue ? null : 'Values Not Equals!';
-    };
-  }
 }
