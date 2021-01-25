@@ -7,11 +7,11 @@
       <input
         type="text"
         class="input"
-        v-model="searchText"
+        v-model="search"
         placeholder="Search"
-        v-on:keyup.enter="$emit('search', searchText)"
+        v-on:keyup.enter="$emit('search', search)"
       />
-      <button class="btn" @click="$emit('search', searchText)">
+      <button class="btn" @click="$emit('search', search)">
         <i class="fas fa-search"></i>
       </button>
     </div>
@@ -26,7 +26,6 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class NavBar extends Vue {
-  @Prop() search?: string = '';
-  private searchText = this.search;
+  @Prop() search?: { type: string; default: '' };
 }
 </script>

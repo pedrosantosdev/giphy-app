@@ -17,50 +17,61 @@
       </div>
     </div>
     <transition name="slide-fade" mode="out-in">
-      <div key="login" v-if="isLogin" class="login">
+      <div key="loginform" v-if="isLogin" class="login">
         <Input
           :label="'Login'"
           :formControl="loginForm.controls.username"
+          :key="loginForm.controls.username.key"
           required
-          pattern="\S"
-          key="login_username"
+          @keyup-input="debounceValidate"
+          @blur-input="validateField"
         />
         <Input
           :label="'Password'"
           :type="'password'"
           :formControl="loginForm.controls.password"
+          :key="loginForm.controls.password.key"
           required
-          pattern="\S"
-          key="login_password"
+          @keyup-input="debounceValidate"
+          @blur-input="validateField"
         />
+        <div class="text--white" :class="classMsgResponse" v-show="msgResponse">
+          {{ msgResponse }}
+        </div>
         <button class="btn bg--success text--white" @click="submit()">
           Login
         </button>
       </div>
-      <div key="register" v-else class="register">
+      <div key="registerform" v-else class="register">
         <Input
           :label="'Login'"
           :formControl="registerForm.controls.username"
+          :key="registerForm.controls.username.key"
           required
-          pattern="\S"
-          key="register_username"
+          @keyup-input="debounceValidate"
+          @blur-input="validateField"
         />
         <Input
           :label="'Password'"
           :type="'password'"
           :formControl="registerForm.controls.password"
+          :key="registerForm.controls.password.key"
           required
-          pattern="\S"
-          key="register_password"
+          @keyup-input="debounceValidate"
+          @blur-input="validateField"
         />
         <Input
           :label="'Confirm Password'"
           :type="'password'"
           :formControl="registerForm.controls.confirmPassword"
+          :key="registerForm.controls.confirmPassword.key"
           required
-          pattern="\S"
-          key="register_confirm_password"
+          @keyup-input="debounceValidate"
+          @blur-input="validateField"
         />
+        <div class="text--white" :class="classMsgResponse" v-show="msgResponse">
+          {{ msgResponse }}
+        </div>
         <button class="btn bg--success text--white" @click="submit()">
           Register
         </button>
@@ -70,55 +81,99 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
-import Input from '@/components/shared/Input.vue';
+import { Vue, Component } from 'vue-property-decorator';
 import ReactiveForm, { ReactiveFormControl } from '@/utils/form/reactive-form';
 import { Validators } from '@/utils/form/validators';
+import AuthService from '@/api/auth.service';
 
-@Component({
-  components: {
-    Input
-  }
-})
+@Component
 export default class Login extends Vue {
   private currentPage = 'register';
   private loginForm = new ReactiveForm();
   private registerForm = new ReactiveForm();
+  private timerDebounce: number | null = 1000;
+  private msgResponse = '';
+  private classMsgResponse = 'success';
 
   get isLogin(): boolean {
     return this.currentPage === 'register' ? false : true;
   }
-  get isValid(): boolean {
-    if (this.isLogin) {
-      return this.loginForm.isValid;
-    } else {
-      return this.registerForm.isValid;
-    }
+  private isValid(): boolean {
+    return this.whichForm().isValid;
   }
   private changeForm(type = 'register'): void {
-    if (this.isLogin) {
-      this.loginForm.reset();
-    } else {
-      this.registerForm.reset();
-    }
+    this.whichForm().reset();
     this.currentPage = type;
   }
 
-  private submit() {
+  private whichForm(): ReactiveForm {
     if (this.isLogin) {
-      this.loginForm.validate();
+      return this.loginForm;
     } else {
-      this.registerForm.validate();
+      return this.registerForm;
     }
   }
 
-  private equalsPassword(): string {
+  private validateForm(): void {
+    this.whichForm().validate();
+    this.$forceUpdate();
+  }
+
+  debounceValidate(field: ReactiveFormControl) {
+    if (this.timerDebounce) {
+      clearTimeout(this.timerDebounce);
+      this.timerDebounce = null;
+    }
+    this.timerDebounce = setTimeout(() => {
+      this.validateField(field);
+    }, 600);
+  }
+
+  validateField(field: ReactiveFormControl): void {
+    field.validate();
+    this.$forceUpdate();
+  }
+
+  async submit(): Promise<void> {
+    this.validateForm();
+    const form = this.whichForm();
+    /* if (form.isValid) { */
+    if (this.isLogin) {
+      await AuthService.getInstance()
+        .login(form.formData)
+        .then(value => {
+          localStorage.setItem('user', JSON.stringify(value.data));
+          this.msgResponse = 'Successful Login, redirect in a few seconds';
+          this.classMsgResponse = 'bg--success';
+        })
+        .catch(error => {
+          const err = error.response.data;
+          this.msgResponse = err.data.message;
+          this.classMsgResponse = 'bg--alert';
+        });
+    } else {
+      await AuthService.getInstance()
+        .register(form.formData)
+        .then(value => {
+          this.msgResponse = value.data.message;
+          this.classMsgResponse = 'bg--success';
+        })
+        .catch(error => {
+          const err = error.response.data;
+          this.msgResponse = err.data.message;
+          this.classMsgResponse = 'bg--alert';
+        });
+    }
+    /* } */
+  }
+
+  private equalsPassword(): string | null {
     if (
-      this.registerForm.controls['confirmPassword'].value ===
+      this.registerForm.controls['confirmPassword'].value !==
       this.registerForm.controls['password'].value
     )
-      return '';
-    else return 'Password Not Equals';
+      return 'Password Not Equals';
+    return null;
   }
 
   created() {
@@ -126,8 +181,7 @@ export default class Login extends Vue {
       Validators.required
     ]);
     this.loginForm.controls['password'] = new ReactiveFormControl('', [
-      Validators.required,
-      Validators.stringLength(8)
+      Validators.required
     ]);
     this.registerForm.controls['username'] = new ReactiveFormControl('', [
       Validators.required
