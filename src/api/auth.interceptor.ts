@@ -1,24 +1,25 @@
+import { Auth } from '@/utils/auth/auth';
 import axios from 'axios';
 
 export default function setup() {
+  const apiUrlPrefix = process.env.VUE_APP_KTOR_API_URL;
   // Request
   axios.interceptors.request.use(
     function(config) {
       if (
         config.url &&
+        config.url.startsWith(apiUrlPrefix) &&
         (!config.url.endsWith('/oauth/auth') ||
           !config.url.endsWith('/oauth/register'))
       ) {
-        const expiresAt = localStorage.getItem('expires_at') ?? '';
-        const userTokenExpiration = new Date(expiresAt);
+        const user = Auth.getUser();
+        const userTokenExpiration = new Date(user.expiresAt);
         const today = new Date();
         if (today > userTokenExpiration) {
           // refresh the token here
-          const userRefreshToken = localStorage.getItem('refresh_token');
-          config.headers.Authorization = `Bearer ${userRefreshToken}`;
+          config.headers.Authorization = `Bearer ${user.refreshToken}`;
         } else {
-          const userToken = localStorage.getItem('access_token');
-          config.headers.Authorization = `Bearer ${userToken}`;
+          config.headers.Authorization = `Bearer ${user.accessToken}`;
         }
       }
       return config;
@@ -41,8 +42,9 @@ export default function setup() {
       const requestURL = error.request.responseURL;
       if (
         error.response.status === 401 &&
-        (!requestURL.endsWith('/oauth/auth') &&
-          !requestURL.endsWith('/oauth/register'))
+        requestURL.startsWith(apiUrlPrefix) &&
+        !requestURL.endsWith('/oauth/auth') &&
+        !requestURL.endsWith('/oauth/register')
       ) {
         const requestConfig = error.config;
         return axios(requestConfig);

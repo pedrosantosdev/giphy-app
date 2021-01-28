@@ -3,17 +3,17 @@ import { ENotificationMsgType } from '@/interfaces/notification';
 
 const defaultStateNotification = {
   msg: 'Ops',
-  type: 'info',
+  type: ENotificationMsgType.Info,
   time: 1000,
   show: false
 };
 
 @Module({ namespaced: true })
 export default class NotificationModule extends VuexModule {
-  private msg = 'Ops';
-  private type = ENotificationMsgType.Info;
-  private time = 1000;
-  private show = false;
+  private msg = defaultStateNotification.msg;
+  private type = defaultStateNotification.type;
+  private time = defaultStateNotification.time;
+  private show = defaultStateNotification.show;
 
   @Mutation
   public setMsg(msg: string) {

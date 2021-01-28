@@ -1,5 +1,5 @@
 <template v-if="url.trim().length">
-  <figure>
+  <figure @dblclick="shareWhatsapp(url)">
     <img
       :src="url"
       :width="width"
@@ -16,5 +16,10 @@ export default class Gif extends Vue {
   @Prop() url?: string;
   @Prop() width?: string;
   @Prop() height?: string;
+
+  shareWhatsapp(targetUrl: string): void {
+    const target = 'whatsapp://send?text=' + encodeURIComponent(targetUrl);
+    window.open(target, '_blank');
+  }
 }
 </script>

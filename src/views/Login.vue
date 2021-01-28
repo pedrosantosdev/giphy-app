@@ -88,7 +88,7 @@ import AuthService from '@/api/auth.service';
 
 @Component
 export default class Login extends Vue {
-  private currentPage = 'register';
+  private currentPage = 'login';
   private loginForm = new ReactiveForm();
   private registerForm = new ReactiveForm();
   private timerDebounce: number | null = 1000;
@@ -137,14 +137,19 @@ export default class Login extends Vue {
   async submit(): Promise<void> {
     this.validateForm();
     const form = this.whichForm();
-    /* if (form.isValid) { */
     if (this.isLogin) {
       await AuthService.getInstance()
         .login(form.formData)
         .then(value => {
-          localStorage.setItem('user', JSON.stringify(value.data));
+          this.$store.dispatch('auth/setAuth', {
+            isLogged: true,
+            accessToken: value.data.access_token,
+            refreshToken: value.data.refresh_token,
+            expiresAt: value.data.expires_at
+          });
           this.msgResponse = 'Successful Login, redirect in a few seconds';
           this.classMsgResponse = 'bg--success';
+          this.$router.push({ name: 'home' });
         })
         .catch(error => {
           const err = error.response.data;
@@ -164,7 +169,6 @@ export default class Login extends Vue {
           this.classMsgResponse = 'bg--alert';
         });
     }
-    /* } */
   }
 
   private equalsPassword(): string | null {
@@ -177,6 +181,7 @@ export default class Login extends Vue {
   }
 
   created() {
+    this.$store.dispatch('auth/clearAuth');
     this.loginForm.controls['username'] = new ReactiveFormControl('', [
       Validators.required
     ]);
