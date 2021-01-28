@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "4148d06238ac917e73f98a05f656b1cd",
+    "revision": "c2c455041304eb522414c3c093444039",
     "url": "/giphy-app/index.html"
   },
   {
@@ -12,7 +12,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/giphy-app/robots.txt"
   },
   {
-    "revision": "10a06f739cad021599c4",
+    "revision": "bac0c5b1d2b49c2f9fad",
     "url": "/giphy-app/static/css/app.c90dde3a.css"
   },
   {
@@ -20,19 +20,19 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/giphy-app/static/img/loading.8adbf433.svg"
   },
   {
-    "revision": "10a06f739cad021599c4",
-    "url": "/giphy-app/static/js/app.97a18dec.js"
+    "revision": "bac0c5b1d2b49c2f9fad",
+    "url": "/giphy-app/static/js/app.a8bab8a8.js"
   },
   {
-    "revision": "b2c1e00b52d9866198e3",
-    "url": "/giphy-app/static/js/chunk-vendors.d5a4a8c4.js"
+    "revision": "2128af299e849e24cdda",
+    "url": "/giphy-app/static/js/chunk-vendors.acd0aa12.js"
   },
   {
     "revision": "4126f06de698e13bac18",
     "url": "/giphy-app/static/js/error-pages.fb186a6a.js"
   },
   {
-    "revision": "09ac91277d3eecf8e520",
-    "url": "/giphy-app/static/js/home-page.e4108654.js"
+    "revision": "e2a78dfc1f80ec6758f2",
+    "url": "/giphy-app/static/js/home-page.0eda527d.js"
   }
 ]);

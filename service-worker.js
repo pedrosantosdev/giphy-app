@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/giphy-app/precache-manifest.1d390728814e8ecc9325b3a1f9fd5d10.js"
+  "/giphy-app/precache-manifest.260088cdea69ad8eb1e13d126d6f4091.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "giphy-app"});
