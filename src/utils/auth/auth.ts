@@ -17,6 +17,7 @@ export class Auth {
     }
     const storage = JSON.parse(localStorage.getItem('auth') ?? '{}');
     if (storage && storage.isLogged) {
+      store.dispatch('auth/setAuth', storage);
       return storage;
     }
     return defaultStateAuth;
