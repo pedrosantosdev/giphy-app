@@ -4,7 +4,8 @@ export const defaultStateAuth = {
   isLogged: false,
   accessToken: '',
   refreshToken: '',
-  expiresAt: ''
+  expiresAt: '',
+  user: null
 };
 
 @Module({ namespaced: true })
@@ -13,6 +14,7 @@ export default class AuthModule extends VuexModule {
   private accessToken = defaultStateAuth.accessToken;
   private refreshToken = defaultStateAuth.refreshToken;
   private expiresAt = defaultStateAuth.expiresAt;
+  private user = defaultStateAuth.user;
 
   @Mutation
   public setIsLogged(isLogged: boolean = defaultStateAuth.isLogged) {
@@ -33,6 +35,10 @@ export default class AuthModule extends VuexModule {
   public setExpiresAt(expiresAt = defaultStateAuth.expiresAt) {
     this.expiresAt = expiresAt;
   }
+  @Mutation
+  public setUser(user = defaultStateAuth.user) {
+    this.user = user;
+  }
 
   @Action
   public clearAuth() {
@@ -46,5 +52,12 @@ export default class AuthModule extends VuexModule {
     this.context.commit('setRefreshToken', payload.refreshToken);
     this.context.commit('setExpiresAt', payload.expiresAt);
     localStorage.setItem('auth', JSON.stringify(payload));
+  }
+
+  @Action
+  public setAuthUser(payload: typeof defaultStateAuth) {
+    this.context.commit('setUser', payload);
+    const auth = JSON.parse(localStorage.getItem('auth') ?? '');
+    localStorage.setItem('auth', JSON.stringify({ ...auth, user: payload }));
   }
 }

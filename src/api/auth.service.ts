@@ -35,4 +35,12 @@ export default class AuthService {
       .then((value: AxiosResponse<any>) => value.data);
     return response;
   }
+
+  public async details() {
+    const uri = `${this.uri}/oauth/me`;
+    const response = axios
+      .get(uri)
+      .then((value: AxiosResponse<any>) => value.data);
+    return response;
+  }
 }

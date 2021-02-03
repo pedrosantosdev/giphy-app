@@ -16,25 +16,41 @@
       </button>
     </div>
     <div class="menu-links">
-      <i class="far fa-window-close"></i>
       <button @click="() => (showMenu = true)">
         <i class="fas fa-bars"></i>
       </button>
-      <div class="links" v-show="showMenu">
-        <i class="fas fa-times" @click="() => (showMenu = false)"></i>
-        <router-link to="/">Home</router-link>
-        <a href="javascript:void(0)" @click="() => (showModal = true)">Login</a>
-      </div>
+      <transition name="slide-left">
+        <div class="links" v-if="showMenu">
+          <button class="btn-close" @click="() => (showMenu = false)">
+            <i class="fas fa-times"></i>
+          </button>
+          <transition name="slide-left">
+            <router-link v-if="isAuth" to="/dashboard">{{
+              user.username
+            }}</router-link>
+            <a
+              href="javascript:void(0)"
+              @click="() => (showModal = true)"
+              v-else
+              >Login</a
+            >
+          </transition>
+          <router-link to="/">Home</router-link>
+        </div>
+      </transition>
     </div>
-    <Modal v-if="showModal" @close="() => (showModal = false)">
-      <Login slot="body" />
-    </Modal>
+    <transition name="bounce">
+      <Modal v-if="showModal" @close="() => (showModal = false)">
+        <Login @login="onLogin" slot="body" />
+      </Modal>
+    </transition>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
 import Login from '@/views/Login.vue';
+import { Auth } from '@/utils/auth/auth';
 @Component({
   components: { Login }
 })
@@ -42,5 +58,19 @@ export default class NavBar extends Vue {
   @Prop() search?: { type: string; default: '' };
   showModal = false;
   showMenu = window.innerWidth > 992 ? true : false;
+
+  private get isAuth() {
+    return Auth.isLogged();
+  }
+
+  private get user() {
+    return Auth.getUser();
+  }
+
+  private onLogin(status) {
+    if (status === 'success') {
+      this.showModal = false;
+    }
+  }
 }
 </script>

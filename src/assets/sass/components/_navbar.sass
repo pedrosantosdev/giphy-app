@@ -21,9 +21,12 @@
         display: block
         position: relative
         max-height: 100%
+        max-width: 100%
+        width: 100%
         grid-area: search
         align-self: center
         justify-self: end
+        padding-left: 20px
 
         .input
             @include border-radius(10px)
@@ -33,7 +36,8 @@
             border-bottom-right-radius: 0
             border-right-width: 0
             padding: 5px
-            max-width: 75%
+            max-width: 80%
+            width: 80%
         
         .btn
             padding: 5px
@@ -42,13 +46,13 @@
             @include border-radius(5px)
             border-top-left-radius: 0px
             border-bottom-left-radius: 0px
-            max-width: 25%
+            max-width: 15%
             border: 1px solid darken($white, 25%)
 
     .menu-links
         display: flex
 
-        svg
+        button
             display: none
 
         .links
@@ -61,20 +65,19 @@
             align-self: center
             justify-self: end
 
-            a
-                max-width: 10%
-
-            svg
+            button
                 display: none
 
 @media screen and ( max-width:  992px)
     .navbar
+        grid-template-columns: 40px 1fr 50px
+
         .menu-links
             justify-content: flex-end
             align-items: center
-            padding-right: 20px
+            padding-right: 10px
             
-            svg
+            button
                 display: block
         
             .links
@@ -84,13 +87,24 @@
                 right: 0
                 top: 0
                 flex-flow: column
-                background: $white
+                background: $black
+                justify-content: normal
+
+                > *
+                    margin: 5px 0
+                    padding: 15px
+                
+                    &:not(:first-child)
+                        background-color: $white
+                        border-bottom: 1px solid $black
+                        border-top: 1px solid $black
 
                 a
                     max-width: 100%
                     min-height: 20px
+                    text-decoration: none
 
-                svg
+                button
                     display: block
-
+                    text-align: end
     

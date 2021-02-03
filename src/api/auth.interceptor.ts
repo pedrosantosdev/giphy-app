@@ -12,7 +12,7 @@ export default function setup() {
         (!config.url.endsWith('/oauth/auth') ||
           !config.url.endsWith('/oauth/register'))
       ) {
-        const user = Auth.getUser();
+        const user = Auth.getAuth();
         const userTokenExpiration = new Date(user.expiresAt);
         const today = new Date();
         if (today > userTokenExpiration) {

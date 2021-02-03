@@ -126,7 +126,7 @@ export default class Login extends Vue {
     }
     this.timerDebounce = setTimeout(() => {
       this.validateField(field);
-    }, 600);
+    }, 1000);
   }
 
   validateField(field: ReactiveFormControl): void {
@@ -147,9 +147,14 @@ export default class Login extends Vue {
             refreshToken: value.data.refresh_token,
             expiresAt: value.data.expires_at
           });
-          this.msgResponse = 'Successful Login, redirect in a few seconds';
+          if (document.getElementById('modalDescription')) {
+            this.msgResponse = 'Successful Login';
+            this.$emit('login', 'success');
+          } else {
+            this.msgResponse = 'Successful Login, redirect in a few seconds';
+            this.$router.push({ name: 'home' });
+          }
           this.classMsgResponse = 'bg--success';
-          this.$router.push({ name: 'home' });
         })
         .catch(error => {
           const err = error.response.data;

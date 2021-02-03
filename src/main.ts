@@ -4,7 +4,7 @@ import './registerServiceWorker';
 import router from './router';
 import store from './store';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faTimes, faBars } from '@fortawesome/free-solid-svg-icons';
 import { dom } from '@fortawesome/fontawesome-svg-core';
 
 /* Auto Import Shared Components */
@@ -50,6 +50,8 @@ import AuthInterceptor from '@/api/auth.interceptor';
 
 dom.watch();
 
+library.add(faTimes);
+library.add(faBars);
 library.add(faSearch);
 
 AuthInterceptor();
