@@ -25,7 +25,7 @@
             <i class="fas fa-times"></i>
           </button>
           <transition name="slide-left">
-            <router-link v-if="isAuth" to="/dashboard">{{
+            <router-link v-if="isAuth && user" to="/dashboard">{{
               user.username
             }}</router-link>
             <a

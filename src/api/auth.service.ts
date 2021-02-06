@@ -36,6 +36,19 @@ export default class AuthService {
     return response;
   }
 
+  public async refreshToken(token: string) {
+    const uri = `${this.uri}/oauth/refresh-token`;
+    const form = new FormData();
+    form.append('token', token);
+    const headers = {
+      'Content-Type': 'application/form-data'
+    };
+    const response = axios
+      .post(uri, form, { headers })
+      .then((value: AxiosResponse<any>) => value.data);
+    return response;
+  }
+
   public async details() {
     const uri = `${this.uri}/oauth/me`;
     const response = axios

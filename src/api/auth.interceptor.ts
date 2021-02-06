@@ -1,5 +1,6 @@
 import { Auth } from '@/utils/auth/auth';
 import axios from 'axios';
+import AuthService from './auth.service';
 
 export default function setup() {
   const apiUrlPrefix = process.env.VUE_APP_KTOR_API_URL;
@@ -17,7 +18,9 @@ export default function setup() {
         const today = new Date();
         if (today > userTokenExpiration) {
           // refresh the token here
-          config.headers.Authorization = `Bearer ${user.refreshToken}`;
+          AuthService.getInstance().refreshToken(user.refreshToken);
+          const requestConfig = config;
+          return axios(requestConfig);
         } else {
           config.headers.Authorization = `Bearer ${user.accessToken}`;
         }
@@ -41,13 +44,12 @@ export default function setup() {
       // and try a new request before rejecting the promise
       const requestURL = error.request.responseURL;
       if (
-        error.response.status === 401 &&
+        requestURL &&
         requestURL.startsWith(apiUrlPrefix) &&
-        !requestURL.endsWith('/oauth/auth') &&
-        !requestURL.endsWith('/oauth/register')
+        (!requestURL.endsWith('/oauth/auth') ||
+          !requestURL.endsWith('/oauth/register'))
       ) {
-        const requestConfig = error.config;
-        return axios(requestConfig);
+        Auth.logout();
       }
       return Promise.reject(error);
     }
