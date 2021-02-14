@@ -1,7 +1,7 @@
 <template v-if="url.trim().length">
-  <figure @dblclick="shareWhatsapp(url)">
+  <figure @dblclick="shareWhatsapp(url.mp4)">
     <img
-      :src="url"
+      :src="url.url"
       :alt="alt"
       :width="width"
       :height="height"
@@ -15,7 +15,7 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class Gif extends Vue {
   @Prop() alt?: string;
-  @Prop() url?: string;
+  @Prop() url?;
   @Prop() width?: string;
   @Prop() height?: string;
 

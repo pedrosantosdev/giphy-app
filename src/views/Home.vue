@@ -7,7 +7,7 @@
           v-for="(img, index) in imgs"
           :key="index"
           :alt="img.title"
-          :url="img.images.original.webp"
+          :url="img.images.original"
           :width="img.images.original.width"
           :height="img.images.original.height"
         />
