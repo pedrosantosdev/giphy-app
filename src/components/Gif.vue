@@ -2,6 +2,7 @@
   <figure @dblclick="shareWhatsapp(url)">
     <img
       :src="url"
+      :alt="alt"
       :width="width"
       :height="height"
       crossorigin="Anonymous"
@@ -13,6 +14,7 @@
 import { Component, Prop, Vue } from 'vue-property-decorator';
 @Component
 export default class Gif extends Vue {
+  @Prop() alt?: string;
   @Prop() url?: string;
   @Prop() width?: string;
   @Prop() height?: string;

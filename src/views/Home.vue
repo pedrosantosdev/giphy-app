@@ -6,6 +6,7 @@
         <Gif
           v-for="(img, index) in imgs"
           :key="index"
+          :alt="img.title"
           :url="img.images.original.webp"
           :width="img.images.original.width"
           :height="img.images.original.height"

@@ -1,6 +1,12 @@
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? '/giphy-app/' : '/',
-  assetsDir: 'static',
+  publicPath:
+    process.env.NODE_ENV === 'production' && !process.env.DOCKER
+      ? '/giphy-app/'
+      : '/',
+  assetsDir:
+    process.env.NODE_ENV === 'production' && !process.env.DOCKER
+      ? 'static'
+      : '',
   lintOnSave: process.env.NODE_ENV !== 'production',
   pwa: {
     name: 'Giphy Search App',
