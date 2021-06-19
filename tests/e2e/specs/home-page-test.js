@@ -1,8 +1,17 @@
-// https://docs.cypress.io/api/introduction/api.html
+// https://docs.cypress.io/api/table-of-contents
 
 describe('Home Page Visit Test', () => {
   it('Visits the home page, verify with get results', () => {
     cy.visit('/');
+    cy.wait(1000);
+    cy.get('#GridImages').should('be.visible');
+    cy.get('#GridImages')
+      .find('figure')
+      .should($item => {
+        if ($item.length === 0) {
+          throw new Error('Did not find 1 element');
+        }
+      });
   });
 });
 

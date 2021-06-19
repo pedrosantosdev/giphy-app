@@ -18,7 +18,7 @@ export default class UserService {
 
   public async index() {
     const uri = `${this.uri}/users`;
-    const headers = {}
+    const headers = {};
     const response = axios
       .get(uri, { headers })
       .then((value: AxiosResponse<any>) => value.data);

@@ -21,7 +21,7 @@ export class Auth {
     return defaultStateAuth;
   }
 
-  static getUser(): any {
+  static getUser(): typeof defaultStateAuth.user {
     const auth = store.state.auth;
     if (auth && auth.isLogged && auth.user != null) {
       return auth.user;
@@ -33,7 +33,7 @@ export class Auth {
         .then(user => store.dispatch('auth/setAuthUser', user.data.user));
       return store.state.auth.user;
     }
-    return null
+    return null;
   }
 
   static logout(): void {
